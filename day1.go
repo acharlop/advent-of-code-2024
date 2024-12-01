@@ -8,6 +8,8 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"text/tabwriter"
+	"time"
 )
 
 func abs(a, b int) int {
@@ -37,13 +39,12 @@ func counts(a []int) map[int]int {
 	return counts
 }
 
-func similarity(a, b []int) int {
+func findSimilarity(a, b []int) int {
 	countsB := counts(b)
 
 	sum := 0
 	
 	for i := 0; i < len(a); i++ {
-		fmt.Println(i, a[i], countsB[a[i]], a[i] * countsB[a[i]])
 		sum += a[i] * countsB[a[i]]
 	}
 
@@ -78,12 +79,24 @@ func getDataFromFile(path string) ([]int, []int) {
 }
 
 func main() {
+	start := time.Now()
+
 	left, right := getDataFromFile("data/day1.txt")
 
 	slices.Sort(left)
 	slices.Sort(right)
 
-	fmt.Println("Part 1: total distance between lists - ", findDistance(left, right))
+	distance := findDistance(left, right)
 
-	fmt.Println("Part 2: similarity score - ", similarity(left, right))
+	similarity := findSimilarity(left, right)
+
+	elapsed := time.Since(start)
+
+	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+
+	fmt.Fprintf(w, "Day\t1\n")
+	fmt.Fprintf(w, "Part\t1\t%d\n", distance)
+	fmt.Fprintf(w, "Part\t2\t%d\n", similarity)
+	fmt.Fprintf(w, "Time\t\t%s\n", elapsed)
+	w.Flush()
 }

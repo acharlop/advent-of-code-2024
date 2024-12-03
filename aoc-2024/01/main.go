@@ -12,6 +12,35 @@ import (
 	"time"
 )
 
+func getDataColsFromFile() ([]int, []int) {
+	path := "input/data.txt"
+
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	var left []int
+	var right []int
+	var num int
+
+	for scanner.Scan() {
+		line := strings.Split(scanner.Text(), " ")
+
+		num, _ = strconv.Atoi(line[0])
+		left = append(left, num)
+
+		num, _ = strconv.Atoi(line[1])
+		right = append(right, num)
+	}
+
+	return left, right
+}
+
 func abs(a, b int) int {
 	if a > b {
 		return a - b
@@ -51,37 +80,10 @@ func findSimilarity(a, b []int) int {
 	return sum
 }
 
-func getDataFromFile(path string) ([]int, []int) {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	var left []int
-	var right []int
-	var num int
-
-	for scanner.Scan() {
-		line := strings.Split(scanner.Text(), "   ")
-
-		num, _ = strconv.Atoi(line[0])
-		left = append(left, num)
-
-		num, _ = strconv.Atoi(line[1])
-		right = append(right, num)
-	}
-
-	return left, right
-}
-
 func main() {
 	start := time.Now()
 
-	left, right := getDataFromFile("data/day1.txt")
+	left, right := getDataColsFromFile()
 
 	slices.Sort(left)
 	slices.Sort(right)

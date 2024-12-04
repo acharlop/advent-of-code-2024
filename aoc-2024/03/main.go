@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-
 func getDataFromFile() []string {
 	path := "input/data.txt"
 
@@ -29,7 +28,7 @@ func getDataFromFile() []string {
 
 	for scanner.Scan() {
 		matches := re.FindAllStringSubmatch(scanner.Text(), -1)
-		for i := range matches  {
+		for i := range matches {
 			if matches[i][0] == "do()" {
 				data = append(data, "on")
 			} else if matches[i][0] == "don't()" {
@@ -59,7 +58,7 @@ func doWork(data []string) int {
 		}
 
 		nums := strings.Split(data[i], ",")
-		
+
 		if len(nums) != 2 {
 			log.Fatal("invalid data")
 		}
@@ -72,7 +71,7 @@ func doWork(data []string) int {
 	return total
 }
 
-func main () {
+func main() {
 
 	data := getDataFromFile()
 
